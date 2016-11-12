@@ -3,53 +3,87 @@ package com.ds.weatherapp;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 
+import com.ds.weatherapp.adapter.MyFragmentPagerAdapter;
 import com.ds.weatherapp.fragment.MenuLeftFragment;
 import com.ds.weatherapp.fragment.MenuRightFragment;
 import com.ds.weatherapp.fragment.TestFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
+import com.ds.views.TitleBar;
+
 public class MainActivity extends SlidingFragmentActivity {
 	private ViewPager mViewPager;
-	private FragmentPagerAdapter mAdapter;
+	private MyFragmentPagerAdapter mAdapter;
 	private List<Fragment> mFragments = new ArrayList<Fragment>();
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
+		initTitleBar();
 		initSlidingMenu();
 		initViewPager();
+	}
+	private void initTitleBar() {
+		TitleBar titleBar = (TitleBar)findViewById(R.id.titlebar);
+		titleBar.setImmersive(false);
+		titleBar.setBackgroundResource(R.drawable.title_bg);
+		titleBar.setLeftImageResource(R.drawable.people);
+		titleBar.setLeftText(R.string.menu);
+		titleBar.setLeftTextColor(Color.WHITE);
+		titleBar.setLeftClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showLeftMenu();
+			}
+		});
+		
+		titleBar.setTitle(R.string.weather);
+	    titleBar.setTitleColor(Color.WHITE);
+	    titleBar.setSubTitleColor(Color.WHITE);
+	    titleBar.setDividerColor(Color.GRAY);
+		
+        titleBar.setActionTextColor(Color.WHITE);
+        titleBar.addAction(new TitleBar.TextAction(getResources().getString(R.string.city)) {
+     			@Override
+     			public void performAction(View view) {
+     				// TODO Auto-generated method stub
+     				showRightMenu();
+     			}
+     	});
+        titleBar.addAction(new TitleBar.ImageAction(R.drawable.right) {
+			
+			@Override
+			public void performAction(View view) {
+				// TODO Auto-generated method stub
+				showRightMenu();
+			}
+		});
 	}
 	
 	private void initViewPager() {
 		mViewPager = (ViewPager)findViewById(R.id.pageviewer);
+		
 		mFragments.add(new TestFragment("this is first fragment"));
 		mFragments.add(new TestFragment("this is second fragment"));
 		mFragments.add(new TestFragment("this is third fargment"));
 		
-		mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-			
-			@Override
-			public int getCount() {
-				// TODO Auto-generated method stub
-				return mFragments.size();
-			}
-			
-			@Override
-			public Fragment getItem(int positon) {
-				// TODO Auto-generated method stub
-				return mFragments.get(positon);
-			}
-		};
+		mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragments);
 		mViewPager.setAdapter(mAdapter);
 	}
 	

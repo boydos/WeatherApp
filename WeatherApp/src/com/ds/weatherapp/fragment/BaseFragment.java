@@ -25,5 +25,14 @@ public abstract class BaseFragment  extends Fragment{
 	public View getBaseView() {
 		return mView;
 	}
+	
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		if(mView!=null) {
+			((ViewGroup)mView.getParent()).removeView(mView);
+		}
+	}
 	protected abstract void initView(LayoutInflater inflater,ViewGroup container);
 }

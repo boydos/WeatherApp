@@ -13,7 +13,6 @@ public class TestFragment extends BaseFragment{
 	}
 	@Override
 	protected void initView(LayoutInflater inflater, ViewGroup container) {
-		// TODO Auto-generated method stub
 		setBaseView(inflater.inflate(R.layout.test, container,false));
 		TextView test = (TextView)getBaseView().findViewById(R.id.test);
 		test.setText(content);
