@@ -1,5 +1,6 @@
 package com.ds.weatherapp.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,9 @@ public abstract class BaseFragment  extends Fragment{
 	}
 	public View getBaseView() {
 		return mView;
+	}
+	public Context getBaseContext() {
+		return this.getActivity().getBaseContext();
 	}
 	
 	@Override
